@@ -1,0 +1,10 @@
+__pycache__/ *.pyc .venv/ env/ .idea/ .vscode/ .ipynb_checkpoints/
+*.log runs/ lightning_logs/ wandb/
+*.pt *.pth *.ckpt
+data/ datasets/ outputs/
+*.npy *.npz *.h5 *.hdf5 *.csv *.parquet
+*.sif *.img
+.DS_Store Thumbs.db
+slurm-*.out
+__pycache__/
+*.pyc
