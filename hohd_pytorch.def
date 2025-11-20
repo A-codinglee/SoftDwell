@@ -1,0 +1,49 @@
+Bootstrap: docker
+From: dockerhub-mirror3.rrze.uni-erlangen.de/nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
+
+%files
+    requirements.txt /
+
+%post
+    # dash-compatible:
+    set -eux
+
+    # OS deps for building Python + useful libs
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
+        libffi-dev liblzma-dev tk-dev libncursesw5-dev libgdbm-dev libnss3-dev uuid-dev \
+        libhdf5-dev \
+        wget curl ca-certificates git
+    rm -rf /var/lib/apt/lists/*
+
+    # Build & install CPython 3.11 to /usr/local
+    PY_VER=3.11.9
+    cd /tmp
+    curl -fsSLO https://www.python.org/ftp/python/${PY_VER}/Python-${PY_VER}.tgz
+    tar -xzf Python-${PY_VER}.tgz
+    cd Python-${PY_VER}
+    ./configure --prefix=/usr/local --enable-optimizations --with-ensurepip=install
+    make -j"$(nproc)"
+    make altinstall   # installs python3.11 and pip3.11
+
+    # Prefer 3.11 at runtime
+    ln -sf /usr/local/bin/python3.11 /usr/local/bin/python3
+    ln -sf /usr/local/bin/pip3.11    /usr/local/bin/pip3
+
+    # Python deps with pip3.11
+    /usr/local/bin/pip3.11 install --no-cache-dir --upgrade pip setuptools wheel
+    /usr/local/bin/pip3.11 install --no-cache-dir -r /requirements.txt
+
+    # Clean
+    rm -rf /tmp/Python-${PY_VER}* /root/.cache/pip
+
+%environment
+    export PATH="/usr/local/bin:${PATH}"
+    export PYTHONUNBUFFERED=1
+    export LC_ALL=C
+    export PIP_NO_CACHE_DIR=1
+
+%runscript
+    exec /usr/local/bin/python3.11 "$@"
