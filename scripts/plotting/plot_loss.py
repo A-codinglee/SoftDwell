@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import argparse
+import numpy as np
 
 def plot_loss(metrics_csv: str, out_path: str = "outputs/graphs/loss_curve.png"):
     """Plot training and validation loss curves from a CSV file."""
@@ -13,16 +14,14 @@ def plot_loss(metrics_csv: str, out_path: str = "outputs/graphs/loss_curve.png")
     # --- Load data ---
     with open(metrics_csv, "r") as f:
         first_line = f.readline().strip()
-        # Check if first line is header (contains non-numeric chars)
-        if any(c.isalpha() for c in first_line):
-            pass  # header line already skipped
-        else:
-            # If no header, treat the first line as data
+
+        # Check if first line is header
+        if not any(c.isalpha() for c in first_line):
             epoch, train, val = first_line.split(",")
             epochs.append(int(epoch))
             train_losses.append(float(train))
             val_losses.append(float(val))
-        # Continue reading remaining lines
+
         for line in f:
             if not line.strip():
                 continue
@@ -31,25 +30,35 @@ def plot_loss(metrics_csv: str, out_path: str = "outputs/graphs/loss_curve.png")
             train_losses.append(float(train))
             val_losses.append(float(val))
 
-    # --- Plot ---
-    plt.figure(figsize=(8, 5))
-    plt.plot(epochs, train_losses, marker="o", label="Train Loss")
-    plt.plot(epochs, val_losses, marker="s", label="Validation Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Training vs Validation Loss")
-    plt.legend()
-    plt.grid(True, which="both", ls="--")
-    plt.yscale("log")  # log scale for stability
+    # --- Convert to arrays ---
+    epochs = np.array(epochs)
+    train_losses = np.array(train_losses)
+    val_losses = np.array(val_losses)
+
+    # --- Omit first epoch(s) for readability ---
+    mask = epochs > 1
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(epochs[mask], train_losses[mask], marker="o", markersize=4, label="Train")
+    plt.plot(epochs[mask], val_losses[mask], marker="s", label="Validation")
+
+    plt.xlabel("Epoch", fontsize=15)
+    plt.ylabel("Loss", fontsize=15)
+    plt.title("Training and Validation Loss", fontsize=18)
+    plt.legend(fontsize=13)
+    plt.grid(True, which="major", alpha=0.3, linewidth=0.5)
+    # plt.yscale("log")
     ax = plt.gca()
-    ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    ax.tick_params(axis="both", labelsize=13)
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
+    ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%.2f'))
+
     plt.tight_layout()
-    plt.savefig(out_path, dpi=150)
+    plt.savefig(out_path, dpi=200, bbox_inches="tight")
     plt.close()
     print(f"[plot] Saved loss curve to {out_path}")
 
 
-# --- CLI Entry Point ---
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Plot training and validation loss curves.")
     parser.add_argument("--csv", type=str, required=True,
