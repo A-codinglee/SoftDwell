@@ -36,6 +36,7 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 
+from scripts.common.gitinfo import git_info
 from scripts.hist_pipeline.train_hist import append_metrics_csv, init_metrics_csv
 from scripts.hist_pipeline.train_hist_online import (CONDITIONS, LR_FACTOR, LR_PATIENCE, MIN_LR, SIM_DETAIL,
                                                      SIM_DETAIL_NAMES, STREAM_TEST, STREAM_TRAIN, STREAM_VAL,
@@ -638,6 +639,7 @@ def main():
                  "noise_mode": sim_cfg.noise_mode, "noise_files_train_val": sim_cfg.noise_paths,
                  "noise_files_test": sim_cfg.noise_test_paths or sim_cfg.noise_paths},
     }
+    train_config["git"] = git_info()
     with open(os.path.join(args.output_root, "train_config.json"), "w") as f:
         json.dump(train_config, f, indent=2)
     print(f"[Parent] backbone={args.backbone} params={n_params:,} cpus={n_cpus} gen_workers={args.gen_workers} "

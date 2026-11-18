@@ -55,6 +55,7 @@ import numpy as np
 import torch
 import torch.multiprocessing as mp
 
+from scripts.common.gitinfo import git_info
 from scripts.hist_pipeline import train_selfcal_online as tso
 from scripts.hist_pipeline.predict_selfcal import run_args
 from scripts.hist_pipeline.train_hist_online import (LR_FACTOR, LR_PATIENCE, MIN_LR, STREAM_TEST, STREAM_VAL,
@@ -345,6 +346,7 @@ def main():
                  "gen_workers": args.gen_workers, "resim_workers": args.resim_workers, "n_val": args.n_val,
                  "n_test": args.n_test, "noise_mode": sim_cfg.noise_mode},
     }
+    train_config["git"] = git_info()
     with open(os.path.join(out, "train_config.json"), "w") as f:
         json.dump(train_config, f, indent=2)
 

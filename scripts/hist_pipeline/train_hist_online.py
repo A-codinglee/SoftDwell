@@ -32,6 +32,7 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 
+from scripts.common.gitinfo import git_info
 from scripts.common.canonicalize import choose_canonicalizer, extract_chain_rates_from_Q
 from scripts.hist_pipeline.train_hist import append_metrics_csv, init_metrics_csv
 from scripts.hist_pipeline.gpu_noise import release_noise, take_noise
@@ -785,6 +786,7 @@ def main():
                  "noise_mode": sim_cfg.noise_mode, "noise_files_train_val": sim_cfg.noise_paths,
                  "noise_files_test": sim_cfg.noise_test_paths or sim_cfg.noise_paths},
     }
+    train_config["git"] = git_info()
     with open(os.path.join(args.output_root, "train_config.json"), "w") as f:
         json.dump(train_config, f, indent=2)
 

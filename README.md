@@ -16,6 +16,7 @@ single-channel current recordings, trained online on simulated traces.
 | `*.sh` (top level) | Slurm job scripts for the NHR@FAU Alex cluster |
 
 Results, checkpoints, noise files and the container image (`pytorch.sif`) are not in the repository.
+How the pipelines developed, how to re-run each step and which branch is for what: [docs/ROUTE.md](docs/ROUTE.md).
 
 ## Simulator
 
