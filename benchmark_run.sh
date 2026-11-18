@@ -13,7 +13,7 @@ BS=${3:-32}   # Default 32
 EXP_NAME="${K}Det_${RES}Res"
 
 # 3. Setup Directories
-BASE_DIR="/home/hpc/mfpb/mfpb102h/master/SoftDwell/outputs/COCO/1p6_3p2"
+BASE_DIR="/home/hpc/mfpb/mfpb102h/master/SoftDwell/outputs/COC/1"
 OUTPUT_ROOT="${BASE_DIR}/${EXP_NAME}"
 LOG_DIR="$OUTPUT_ROOT/logs"
 CKPT_DIR="$OUTPUT_ROOT/checkpoints"

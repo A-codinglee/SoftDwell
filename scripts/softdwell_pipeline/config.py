@@ -18,7 +18,7 @@ class TrainConfig:
     splits_dir: str = None
 
     # -------- data (HDF5) --------
-    h5_path: str = "/home/woody/mfpb/mfpb003h/time_series_datasets/COCO_SNR_1p6_3p2_100000_kij_100_1000000_samples_1000000_lvl_20000_22000_recStepResp_spectralBathNoise_time_series_unclamped_2026_04_14.h5"
+    h5_path: str = "/home/woody/mfpb/mfpb003h/time_series_datasets/COC_SNR_1_100000_kij_10_1000000_samples_1000000_lvl_20000_22000_recStepResp_spectralBathNoise_time_series_unclamped_2026_06_29.h5"
 
     x_key: str = "traces"
     # x_key: str = "timeseries"
@@ -36,8 +36,8 @@ class TrainConfig:
     split_seed: int = 42
     split_name: str = "default"    
 
-    topology: str = "COCO"
-    symmetry: str = "off"   # "on", "off", or "auto
+    topology: str = "COC"
+    symmetry: str = "on"   # "on", "off", or "auto
 
     # -------- HOHD (incremental-ΔW exact) --------
     use_soft_dwell: bool = True
@@ -55,7 +55,7 @@ class TrainConfig:
     logN_gamma: float = 0.0
 
     # -------- model/training --------
-    num_outputs: int = 6
+    num_outputs: int = 4
     use_bn: bool = False
     amp: bool = True
     lr: float = 1e-3 # from 5e-4

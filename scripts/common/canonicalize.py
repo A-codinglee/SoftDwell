@@ -88,6 +88,22 @@ def cococ(y: np.ndarray) -> np.ndarray:
     D = int(np.asarray(y).shape[0])
     return canonicalize_by_permutations(y, perms_chain_reversal(D))
 
+def coc(y: np.ndarray) -> np.ndarray:
+    """
+    COC is palindromic => symmetric under reversal.
+    Works for any chain length because it uses D=len(y).
+    """
+    D = int(np.asarray(y).shape[0])
+    return canonicalize_by_permutations(y, perms_chain_reversal(D))
+
+def oco(y: np.ndarray) -> np.ndarray:
+    """
+    OCO is palindromic => symmetric under reversal.
+    Works for any chain length because it uses D=len(y).
+    """
+    D = int(np.asarray(y).shape[0])
+    return canonicalize_by_permutations(y, perms_chain_reversal(D))
+
 
 def coco(y: np.ndarray) -> np.ndarray:
     """
@@ -100,6 +116,8 @@ def coco(y: np.ndarray) -> np.ndarray:
 # Map: topology name -> (is_symmetric, canonicalizer)
 TOPOLOGY_CANON: dict[str, tuple[bool, Optional[Callable[[np.ndarray], np.ndarray]]]] = {
     "COCOC": (True,  cococ),
+    "COC": (True,  coc),   # <--- important: symmetric, so canonicalizer is cococ
+    "OCO": (True,  oco),   # <--- symmetric as well
     "COCO":  (False, None),  # <--- important: not symmetric, so canonicalizer is None
 }
 

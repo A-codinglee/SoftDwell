@@ -3,9 +3,9 @@
 #SBATCH --gres=gpu:a100:4
 #SBATCH --ntasks=1                
 #SBATCH --cpus-per-task=32        # Increased to 32 (8*4) to feed 4 GPUs
-#SBATCH --time=02:00:00
+#SBATCH --time=00:30:00
 #SBATCH --export=NONE
-#SBATCH --output=/home/hpc/mfpb/mfpb102h/master/SoftDwell/outputs/hist_train/COCO/SNR_5/K24J72/logs/slurm-%j.out
+#SBATCH --output=/home/hpc/mfpb/mfpb102h/master/SoftDwell/outputs/hist_train/COC/SNR_1/K24J24/logs/slurm-%j.out
 
 set -euo pipefail
 
@@ -19,7 +19,7 @@ PROJECT_ROOT=$HOME/master/SoftDwell
 cd "$PROJECT_ROOT" || { echo "Could not cd to $PROJECT_ROOT"; exit 1; }
 
 # 3. Create Logs
-mkdir -p "$PROJECT_ROOT/outputs/hist_train/COCO/SNR_5/K24J72/logs"
+mkdir -p "$PROJECT_ROOT/outputs/hist_train/COC/SNR_1/K24J24/logs"
 
 # 4. Performance Tuning
 #    Pin threads to avoid fighting between processes

@@ -1,0 +1,42 @@
+{
+  "_comment": "COC.json (SNR 1, recorded bath noise, rates 10..1e6 Hz) in pA, for the self-calibrating network (train_selfcal_online.py), which needs pA levels and per-sample baseline / amplitude / sigma. Amplitude and sigma = 2000 counts = 6.1035 pA as in COC.json, varied by only +-1% (SNR 0.98..1.02); baseline +-1% of the amplitude. Mirrored: open above closed (COC.json has open 2000 counts below closed), and the grind window mirrored to match COC.json's 18000..24000 (closed - 1 sigma .. open - 1 sigma).",
+
+  "amplifier": { "profile": "axopatch_200b", "gain": 100 },
+
+  "input": {
+    "step_response_double": "step_responses/step_response_double.bin",
+    "step_response_dt": 1e-05
+  },
+
+  "sampling": { "rate_hz": 100000 },
+  "simulation": { "t_max_s": 10 },
+
+  "model": {
+    "initial_state_index": 0,
+    "states": [ { "label": "C" }, { "label": "O" }, { "label": "C" } ],
+    "transition_rates": [
+      [ 0,                             { "min": 10, "max": 1000000 }, 0 ],
+      [ { "min": 10, "max": 1000000 }, 0,                             { "min": 10, "max": 1000000 } ],
+      [ 0,                             { "min": 10, "max": 1000000 }, 0 ]
+    ]
+  },
+
+  "training": {
+    "_comment": "closed level = baseline, open level = baseline + open_sign * amplitude (uniform draws)",
+    "baseline_pA":  { "min": -0.061, "max": 0.061 },
+    "amplitude_pA": { "min": 6.0425, "max": 6.1646 },
+    "open_sign": 1
+  },
+
+  "noise": {
+    "mode": "recorded_noise",
+    "source_path": "noise_files/Bath_Noise_Gain_100.bin",
+    "sigma_pA": { "min": 6.0425, "max": 6.1646 }
+  },
+
+  "analysis": {
+    "hist_backend": "grind",
+    "hist2d": { "tmin_s": 1e-05, "tmax_s": 0.1, "bins": 24 },
+    "grind": { "min_pA": -6.1035, "max_pA": 12.207, "count": 24 }
+  }
+}

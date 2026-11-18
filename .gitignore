@@ -1,10 +1,49 @@
-__pycache__/ *.pyc .venv/ env/ .idea/ .vscode/ .ipynb_checkpoints/
-*.log runs/ lightning_logs/ wandb/
-*.pt *.pth *.ckpt
-data/ datasets/ outputs/
-*.npy *.npz *.h5 *.hdf5 *.csv *.parquet
-*.sif *.img
-.DS_Store Thumbs.db
-slurm-*.out
+# Python
 __pycache__/
 *.pyc
+.venv/
+env/
+.ipynb_checkpoints/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Results, logs and data (live on disk / woody, not in git)
+outputs/
+outputs_woody
+logs/
+runs/
+lightning_logs/
+wandb/
+data/
+datasets/
+test_graphs/
+*.log
+slurm-*.out
+*.sh.o[0-9]*
+
+# Large or binary artefacts
+*.sif
+*.img
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.csv
+*.parquet
+*.bin
+*.png
+
+# Compiled simulator (scripts/simulation/build.sh rebuilds it per node)
+scripts/simulation/build/
+*.o
+*.so
+
+# The simulator source is a separate repository; see README
+external/

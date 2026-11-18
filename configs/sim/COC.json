@@ -1,0 +1,37 @@
+{
+  "_comment": "COC, fixed levels and noise in raw ADC counts (SNR 1). Matches the earlier K24/J24 histogram dataset.",
+
+  "input": {
+    "step_response_double": "step_responses/step_response_double.bin",
+    "step_response_dt": 1e-05
+  },
+
+  "sampling": { "rate_hz": 100000 },
+  "simulation": { "t_max_s": 10 },
+
+  "model": {
+    "initial_state_index": 0,
+    "level_groups": {
+      "C": { "level": 22000 },
+      "O": { "level": 20000 }
+    },
+    "states": [ { "label": "C" }, { "label": "O" }, { "label": "C" } ],
+    "transition_rates": [
+      [ 0,                             { "min": 10, "max": 1000000 }, 0 ],
+      [ { "min": 10, "max": 1000000 }, 0,                             { "min": 10, "max": 1000000 } ],
+      [ 0,                             { "min": 10, "max": 1000000 }, 0 ]
+    ]
+  },
+
+  "noise": {
+    "mode": "recorded_noise",
+    "source_path": "noise_files/Bath_Noise_Gain_100.bin",
+    "sigma": 2000
+  },
+
+  "analysis": {
+    "hist_backend": "grind",
+    "hist2d": { "tmin_s": 1e-05, "tmax_s": 0.1, "bins": 24 },
+    "grind": { "min": 18000, "max": 24000, "count": 24 }
+  }
+}

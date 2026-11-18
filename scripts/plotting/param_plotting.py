@@ -12,7 +12,7 @@ def plot_hohd_params(csv_path: str, out_dir: str = "outputs/graphs"):
 
     title_fs = 18
     label_fs = 15
-    legend_fs = 11
+    legend_fs = 13
     tick_fs = 13
 
     # --- Load data ---
@@ -72,14 +72,14 @@ def plot_hohd_params(csv_path: str, out_dir: str = "outputs/graphs"):
         handles,
         labels,
         loc="lower center",
-        ncol=len(labels),
+        ncol=4, #len(labels),
         bbox_to_anchor=(0.5, -0.02),
         frameon=True,
         fontsize=legend_fs,
     )
 
     # leave space at top for the shared legend
-    plt.tight_layout(rect=[0, 0.03, 1, 1])
+    plt.tight_layout(rect=[0, 0.08, 1, 1])
 
     # save combined figure
     save_path = os.path.join(out_dir, "theta_tau_per_k.png")

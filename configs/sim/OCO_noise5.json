@@ -1,0 +1,101 @@
+{
+  "_comment": "OCO with per-sample baseline, amplitude and noise, in pA (as COC_noise5.json, only the model differs: open - closed - open). Noise from 5 recordings, split into training and test files per run.",
+  "amplifier": {
+    "profile": "axopatch_200b",
+    "gain": 100
+  },
+  "input": {
+    "step_response_double": "step_responses/step_response_double.bin",
+    "step_response_dt": 1e-05
+  },
+  "sampling": {
+    "rate_hz": 100000
+  },
+  "simulation": {
+    "t_max_s": 10
+  },
+  "model": {
+    "initial_state_index": 0,
+    "states": [
+      {
+        "label": "O"
+      },
+      {
+        "label": "C"
+      },
+      {
+        "label": "O"
+      }
+    ],
+    "transition_rates": [
+      [
+        0,
+        {
+          "min": 100,
+          "max": 1000000
+        },
+        0
+      ],
+      [
+        {
+          "min": 100,
+          "max": 1000000
+        },
+        0,
+        {
+          "min": 100,
+          "max": 1000000
+        }
+      ],
+      [
+        0,
+        {
+          "min": 100,
+          "max": 1000000
+        },
+        0
+      ]
+    ]
+  },
+  "training": {
+    "_comment": "closed level = baseline, open level = baseline + open_sign * amplitude (uniform draws)",
+    "baseline_pA": {
+      "min": -1,
+      "max": 1
+    },
+    "amplitude_pA": {
+      "min": 2,
+      "max": 20
+    },
+    "open_sign": 1
+  },
+  "noise": {
+    "mode": "spectral_resample",
+    "_comment": "all recordings; pick the split per run with --holdout-noise NAME (train on the others, test on NAME) or --train-noise NAME (train on NAME, test on the others)",
+    "source_paths": [
+      "/home/woody/mfpb/mfpb003h/time_series_datasets/noise_source_files/Patch_Noise_Gain_100_start367262486_1000s.bin",
+      "/home/woody/mfpb/mfpb003h/time_series_datasets/noise_source_files/2023_02_01_0006_Noise_4503296.bin",
+      "/home/woody/mfpb/mfpb003h/time_series_datasets/noise_source_files/2026_02_20_0003_start0_100s.bin",
+      "/home/woody/mfpb/mfpb003h/time_series_datasets/noise_source_files/2026_02_23_0020_start6858884_100s.bin",
+      "/home/woody/mfpb/mfpb003h/time_series_datasets/noise_source_files/2026_02_25_0018_start0_100s.bin"
+    ],
+    "sigma_pA": {
+      "min": 0.2,
+      "max": 2
+    },
+    "generate_factor": 1
+  },
+  "analysis": {
+    "hist_backend": "grind",
+    "hist2d": {
+      "tmin_s": 1e-05,
+      "tmax_s": 0.1,
+      "bins": 24
+    },
+    "grind": {
+      "min_pA": -3,
+      "max_pA": 23,
+      "count": 24
+    }
+  }
+}
